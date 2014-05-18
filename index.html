@@ -43,7 +43,7 @@
   				console.log("You are getting photos of user: " + document.getElementById('search_input').value);
   				
 					$(".dis").hide();
-  					var API_KEY = '006b0c257a2080fe539d54d5aabebd6d';
+  					var API_KEY = 'INSERT API KEY HERE'; //INSERT API KEY
   					var photolist =[];
   					$.getJSON('https://www.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + API_KEY + '&user_id=' + USER_ID + '&format=json&jsoncallback=?', function(rest) {
 
