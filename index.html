@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+		<meta charset="utf-8"/>
+	<title>Light</title>
+	
+	
+</head>
+<body>
+<div id="photos"></div>
+
+	 <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.js" type="text/javascript"></script>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.6.0/underscore.js"></script>
+  <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.1.2/backbone.js"></script>
+  <script type="text/template" id="phototemp">
+
+
+	
+	<label class ="dis"> Username:  </label>
+	
+	<input class ="dis" type="text" id="search_input" />
+	<input class ="dis" type="button" id="getPhotos" value = "Get Photos!"/>
+</script>
+  
+	<script type="text/javascript">
+
+
+  	photoView = Backbone.View.extend({
+
+  		initialize: function(){
+  			this.render();
+  		},
+  		render: function(){
+  			
+  			var template = _.template($('#phototemp').html(), {});
+  				this.$el.html(template);
+  		},
+  		events: {
+  			'click input#getPhotos': 'getPhotos'
+  		},
+  		getPhotos: function(event){
+  				var USER_ID = document.getElementById('search_input').value;
+  				console.log("You are getting photos of user: " + document.getElementById('search_input').value);
+  				
+					$(".dis").hide();
+  					var API_KEY = '006b0c257a2080fe539d54d5aabebd6d';
+  					var photolist =[];
+  					$.getJSON('https://www.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + API_KEY + '&user_id=' + USER_ID + '&format=json&jsoncallback=?', function(rest) {
+
+        var numPages = rest.photos.pages;
+        var count =0;
+        for (var u =1; u < numPages + 1; u++) {    
+
+
+
+            $.getJSON('https://www.flickr.com/services/rest/?method=flickr.people.getPhotos&api_key=' + API_KEY + '&user_id=' + USER_ID + '&format=json&page=' + u + '&jsoncallback=?', function(results) { 
+
+               
+                 
+
+                for (var m =0; m < 100; m++) {
+                  photolist.push( "http://farm" + results.photos.photo[m].farm + ".staticflickr.com/" + results.photos.photo[m].server+ "/" + results.photos.photo[m].id+ "_"+results.photos.photo[m].secret+".jpg");
+                    count++; console.log(count); if (count === results.photos.total-1){
+                      var fotolist = $('#photos');
+                jQuery.each(photolist , function(index, value){
+                fotolist.append('<img src="'+value+'">');
+                  });
+                    }
+                    
+
+                   
+                    
+                    
+                    
+                }      
+            });
+
+        }    
+    
+
+
+    });
+
+
+
+
+  				}
+
+
+
+  		
+
+  	});
+  	var photos = new photoView({el: $("#photos")});
+
+
+  </script>
+ 
+  
+
+
+</body>
+
+</html>
